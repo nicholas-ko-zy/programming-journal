@@ -427,5 +427,11 @@ eval "$(pyenv init - bash)"
 # Load pyenv-virtualenv automatically by adding
 # the following to ~/.bashrc:
 
+```
 eval "$(pyenv virtualenv-init -)"
 ```
+
+# R
+
+[Video guide to configure VSCode to run R.](https://www.youtube.com/watch?v=rKPfssR66GM)
+

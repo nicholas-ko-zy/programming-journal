@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>programming_journal.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="1-gnulinux">1. GNU/Linux</h1>
+<blockquote>
+<p>Most of the advice I give here are for Pop!_OS since I've really only daily driven this distro. I guess the commands work for Ubuntu based distros.</p>
+</blockquote>
+<h2 id="11-removing-folder">1.1. Removing folder</h2>
+<ul>
+<li>rm - remove</li>
+<li>rf - recursively</li>
+</ul>
+<pre class="hljs"><code><div>sudo rm -rf YOUR_FOLDER_PATH
+</div></code></pre>
+<h2 id="12-bashrc-and-bash_profile">1.2. <code>.bashrc</code> and <code>.bash_profile</code></h2>
+<p>A <code>.bashrc</code> file contains your customisation to your command-lin environment. You use <code>.bashrc</code> to make settings in every new terminal.</p>
+<p><code>.bash_profile</code> is for settings that you only need to run once at login.</p>
+<p>To apply new changes to your terminal use the command</p>
+<pre class="hljs"><code><div>source ~/.bashrc
+</div></code></pre>
+<p>Remarks:</p>
+<ul>
+<li>Bash stands for 'Bourne-Again SHell', supposedly a pun on the author of a previous Unix shell.</li>
+</ul>
+<h1 id="2-emacs">2. Emacs</h1>
+<h2 id="21-todo-writing-a-custom-functionmode-that-modifies-my-schedule-time">2.1. TODO Writing a custom function/mode that modifies my schedule time</h2>
+<h1 id="3-org-mode--org-roam">3. org-mode &amp; org-roam</h1>
+<h1 id="4-vs-code">4. VS Code</h1>
+<h2 id="41-shortcuts">4.1. Shortcuts</h2>
+<ul>
+<li>Move to left, right workspace
+<ul>
+<li>Ctrl+K Ctrl+Right Arrow</li>
+<li>Ctrl+K Ctrl+Left Arrow</li>
+</ul>
+</li>
+</ul>
+<h2 id="solved-issues">Solved issues</h2>
+<ul>
+<li><strong>Problem:</strong> On my pop os machine, I could not do select multiple lines using the <code>Ctrl</code> + <code>Shift</code> + <code>↑/↓</code> shortcuts,
+because there was a conflicting keyboard shortcut called <code>notebook.focusPreviousEditor</code>
+<ul>
+<li><strong>Solution</strong>: Disable the notebook shortcut by going to &quot;Command Palette&quot; &gt; Search for
+search for the conflicting shortcut &gt; Right Click to disable it.</li>
+</ul>
+</li>
+</ul>
+<h1 id="5-python">5. Python</h1>
+<pre class="hljs"><code><div>%load_ext autoreload
+%autoreload 2
+</div></code></pre>
+<h2 id="51-guides-to-python-virtual-environments">5.1. Guides to Python virtual environments</h2>
+<h3 id="511-links-to-guides">5.1.1. Links to guides</h3>
+<p><a href="https://dev.to/bowmanjd/python-tools-for-managing-virtual-environments-3bko">Bowman</a></p>
+<p><a href="https://www.b-list.org/weblog/2022/may/13/boring-python-dependencies/">Bennet</a></p>
+<h4 id="5111-bowman">5.1.1.1. Bowman</h4>
+<ul>
+<li>
+<p>Creating a virtual environment with the <code>venv</code> module</p>
+<ul>
+<li>In your terminal: <code>python -m venv .venv</code></li>
+<li>You can replace <code>python</code> with the specific Python version you need for your virtual environment, i.e. <code>python3.9 -m venv .venv</code></li>
+<li>Sidenote: The <code>-m</code> stands for module name.</li>
+</ul>
+</li>
+<li>
+<p>Activating and deactivating <code>vnenv</code>s</p>
+<ul>
+<li>Activating
+<ul>
+<li>Unix: <code>source ./venv/bin/activate</code></li>
+<li>Windows: <code>.\venv\Scripts\Activate.ps1</code></li>
+</ul>
+</li>
+<li>Deactivating
+<ul>
+<li>Both: <code>deactivate</code></li>
+</ul>
+</li>
+<li>Removing a virtual environment
+<ul>
+<li><code>rm -r .venv</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><code>virtualenv</code> is an expanded version of <code>venv</code> that is faster and has more features.</p>
+</li>
+</ul>
+<p><code>poetry</code> handles</p>
+<ol>
+<li>virtual environments</li>
+<li>project and dependency management</li>
+</ol>
+<p>By default <code>poetry</code> will put the virtual env in another central location outside of the project folder. You can choose to change this and put the virtual env inside the folder with this command</p>
+<pre class="hljs"><code><div>poetry config virtualenvs.in-project true
+</div></code></pre>
+<p>Steps to create a new <code>poetry</code> environment</p>
+<ol>
+<li>Inside your desire directory run</li>
+</ol>
+<pre class="hljs"><code><div>poetry new YOUR_PROJECT_NAME
+</div></code></pre>
+<ol start="2">
+<li>To activate the virtual environment do</li>
+</ol>
+<pre class="hljs"><code><div>poetry shell
+</div></code></pre>
+<ol start="3">
+<li>To exit the virtual environment do</li>
+</ol>
+<pre class="hljs"><code><div>poetry shell
+</div></code></pre>
+<p>If you want to run Python in your terminal within the virutal environment of your project do</p>
+<pre class="hljs"><code><div>poetry run python
+</div></code></pre>
+<ul>
+<li>To add a package in <code>poetry</code> do</li>
+</ul>
+<pre class="hljs"><code><div>poetry add YOUR_PACKAGE_NAME
+</div></code></pre>
+<h4 id="5112-bennett">5.1.1.2. Bennett</h4>
+<h2 id="52-recreating-your-broken-virtual-environment">5.2. Recreating your broken virtual environment</h2>
+<blockquote>
+<p>Context: So on Feb 2026, I tried to create a Windows virtual machine on my Pop!_OS machine while I was working at NUS Cities. I needed access to some Microsoft office features. That didn't go so well. I ended up partitioning my storage, and in attempt to fix that, I messed up the bootloader. I actually expanded the storage which absorbed the bootload and the recovery partitions in my SSD.</p>
+</blockquote>
+<ol>
+<li>If you're on a relatively fresh install of your OS, get <code>pipreqs</code></li>
+</ol>
+<pre class="hljs"><code><div>pip install pipreqs
+</div></code></pre>
+<ol start="2">
+<li>If you're ok overwriting your old requirements.txt use the <code>--force</code> flag also</li>
+</ol>
+<pre class="hljs"><code><div>pipreqs [your directory] --force 
+</div></code></pre>
+<p>i.e.</p>
+<pre class="hljs"><code><div>pipreqs /home/nicholas/git/django_map/ --force 
+</div></code></pre>
+<p>If you hit an error like being unable to read your old venv files, make sure you get pipreqs to ignore those folders</p>
+<pre class="hljs"><code><div>python3 -m pipreqs.pipreqs /home/nicholas/git/django_map/ --ignore django_map,venv
+</div></code></pre>
+<p>Full list of <code>pipreq</code> flags, taken from the <a href="https://github.com/bndr/pipreqs">repo</a> README:</p>
+<pre class="hljs"><code><div>Usage:
+    pipreqs [options] [&lt;path&gt;]
+
+Arguments:
+    &lt;path&gt;                The path to the directory containing the application files for which a requirements file
+                          should be generated (defaults to the current working directory)
+
+Options:
+    --use-local           Use ONLY local package info instead of querying PyPI
+    --pypi-server &lt;url&gt;   Use custom PyPi server
+    --proxy &lt;url&gt;         Use Proxy, parameter will be passed to requests library. You can also just set the
+                          environments parameter in your terminal:
+                          $ export HTTP_PROXY=&quot;http://10.10.1.10:3128&quot;
+                          $ export HTTPS_PROXY=&quot;https://10.10.1.10:1080&quot;
+    --debug               Print debug information
+    --ignore &lt;dirs&gt;...    Ignore extra directories, each separated by a comma
+    --no-follow-links     Do not follow symbolic links in the project
+    --ignore-errors       Ignore errors while scanning files
+    --encoding &lt;charset&gt;  Use encoding parameter for file open
+    --savepath &lt;file&gt;     Save the list of requirements in the given file
+    --print               Output the list of requirements in the standard output
+    --force               Overwrite existing requirements.txt
+    --diff &lt;file&gt;         Compare modules in requirements.txt to project imports
+    --clean &lt;file&gt;        Clean up requirements.txt by removing modules that are not imported in project
+    --mode &lt;scheme&gt;       Enables dynamic versioning with &lt;compat&gt;, &lt;gt&gt; or &lt;non-pin&gt; schemes
+                          &lt;compat&gt; | e.g. Flask~=1.1.2
+                          &lt;gt&gt;     | e.g. Flask&gt;=1.1.2
+                          &lt;no-pin&gt; | e.g. Flask
+    --scan-notebooks      Look for imports in jupyter notebook files.
+</div></code></pre>
+<h2 id="53-creating-a-requirementstxt-file-for-your-repo">5.3. Creating a <code>requirements.txt</code> file for your repo</h2>
+<ol>
+<li>Make sure you have <code>pipreqs</code> isntalled in your venv</li>
+<li>Run this in your terminal</li>
+</ol>
+<pre class="hljs"><code><div>pipreqs YOUR_REPO_PATH
+</div></code></pre>
+<p>If you need to overwrite an existing <code>requirements.txt</code>, do</p>
+<pre class="hljs"><code><div>pipreqs YOUR_REPO_PATH --force
+</div></code></pre>
+<p>If you want to ignore scanning certain directories, use the ignore flag, add directories you want to ignore, each sparated by a comman</p>
+<pre class="hljs"><code><div>pipreqs YOUR_REPO_PATH --ignore IGNORED_DIR_0, IGNORED_DIR_1
+</div></code></pre>
+<h2 id="54-installing-packages-from-requirementstxt">5.4. Installing packages from <code>requirements.txt</code></h2>
+<pre class="hljs"><code><div>pip install -r /path/to/requirements.txt
+</div></code></pre>
+<h2 id="55-installing-other-python-versions">5.5. Installing other Python versions</h2>
+<h2 id="56-wrapping-up-python-repo-to-ensure-it-runs-on-another-machine">5.6. Wrapping up Python repo to ensure it runs on another machine</h2>
+<h3 id="561-poetry">5.6.1. Poetry</h3>
+<ul>
+<li>Poetry is a dependency management and packaging tool in Python.</li>
+<li>Helps you tell yourself (and the world) what libraries your project uses and it will maange (isntall/update) them for you.</li>
+<li>Lockfile - A feature that ensures repeatable installs, and helps you build your project for distribution.</li>
+</ul>
+<h2 id="57-todo-creating-a-proper-python-project-file-structure">5.7. TODO Creating a proper Python project file structure</h2>
+<ul>
+<li>Time for me to learn a standard, industry way to structure
+my Python directory</li>
+</ul>
+<h2 id="uv">uv</h2>
+<p>Installing <code>uv</code> to your machine (taken from <a href="https://medium.com/@hmbarotov/configuring-a-django-project-with-uv-548f15ccbc63">this Medium article</a>)</p>
+<pre class="hljs"><code><div># MacOS / Linux
+$ curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+$ powershell -ExecutionPolicy ByPass -c &quot;irm https://astral.sh/uv/install.ps1 | iex&quot;
+</div></code></pre>
+<p>Run this to verify installation</p>
+<pre class="hljs"><code><div>$ uv --version
+</div></code></pre>
+<p>Initialising your project directory with <code>uv</code>, auto-dls the Python version
+you specified.</p>
+<pre class="hljs"><code><div>uv init --python 3.12
+</div></code></pre>
+<p>Adding packages via <code>uv</code></p>
+<pre class="hljs"><code><div>uv add Django
+</div></code></pre>
+<p>*Remark: <code>uv</code> takes note of all the dependencies arising from top-level packages.
+i.e. Django's dependencies - <code>asgiref</code>, <code>sqlparse</code> etc.</p>
+<p><strong>Running <code>uv</code> in a project folder</strong></p>
+<p>Step 1: Create virtual environment</p>
+<pre class="hljs"><code><div>uv venv
+</div></code></pre>
+<p>Step 2: Activate virtual environment</p>
+<pre class="hljs"><code><div>source .venv/bin/activate
+</div></code></pre>
+<p>Step 3: (Optional) Install from pyproject.toml file</p>
+<pre class="hljs"><code><div></div></code></pre>
+<p>You can group dependencies by adding a <code>--group</code> flag to say which group.</p>
+<p>Examples of groups (I'll probably only need dev and prod)</p>
+<ul>
+<li>base</li>
+<li>dev</li>
+<li>prod</li>
+</ul>
+<p>Pre-fork worker model to handle traffic spikes to your website. Used in prod mostly.</p>
+<pre class="hljs"><code><div>uv add --group prod gunicorn
+</div></code></pre>
+<p>For example, if you only want to use the debug toolbar in dev only.</p>
+<pre class="hljs"><code><div>uv add --group dev django-debug-toolbar
+</div></code></pre>
+<p>Then once you're happy with the state of packages you've added, do</p>
+<pre class="hljs"><code><div>uv sync
+</div></code></pre>
+<p>The uv sync command will:</p>
+<ol>
+<li>Find or download an appropriate Python version.</li>
+<li>Create and set up your environment in the .venv/ folder.</li>
+<li>Build your complete dependency list and update the uv lock file.</li>
+<li>Install your project dependencies into the virtual environment.</li>
+</ol>
+<p>*If you're using Django, start your terminal commands
+with uv. i.e.</p>
+<pre class="hljs"><code><div>uv run manage.py startapp map
+</div></code></pre>
+<h2 id="conda-environments">Conda environments</h2>
+<p>Had to learn this because I wanted to use osmnx which works better when installed on conda.</p>
+<ol>
+<li>Download the conda install, <code>.sh</code> file</li>
+</ol>
+<p>I downloaded miniconda, because I wanted something lightweight, and would not disrupt my other Python environments.</p>
+<ol start="2">
+<li>Install conda from the <code>.sh</code> file, by running the following in your terminal.</li>
+</ol>
+<pre class="hljs"><code><div>bash &lt;conda-installer-name&gt;
+</div></code></pre>
+<ol start="3">
+<li>Add the installed conda to your environment paths</li>
+</ol>
+<pre class="hljs"><code><div>export PATH=~/miniconda3/bin:$PATH
+</div></code></pre>
+<blockquote>
+<p>Remark: You can switch <code>miniconda3</code> to whatever you installed, i.e. if it's <code>anaconda3</code>,
+then replace the miniconda3 with that accordingly.</p>
+</blockquote>
+<ol start="4">
+<li>Create a new virtual environment</li>
+</ol>
+<pre class="hljs"><code><div>conda create -n YOUR_VENV_NAME
+</div></code></pre>
+<ol start="5">
+<li>Conda init in your working directory</li>
+</ol>
+<pre class="hljs"><code><div># In your project's working directory
+conda init
+# You'll be asked to restarted your shell (for Linux)
+</div></code></pre>
+<ol start="6">
+<li>Now you can activate your new venv in your project directory</li>
+</ol>
+<pre class="hljs"><code><div>conda activate YOUR_VENV_NAME
+</div></code></pre>
+<p>To remove a virtual environment</p>
+<pre class="hljs"><code><div>conda env remove -n myenv
+</div></code></pre>
+<h1 id="git">Git</h1>
+<h2 id="deleting-local-and-remote-branches">Deleting local and remote branches</h2>
+<pre class="hljs"><code><div>git push -d &lt;remote_name&gt; &lt;branchname&gt;   # Delete remote
+git branch -d &lt;branchname&gt;               # Delete local
+``
+
+## Reset to previous remote status
+`git reset --hard`
+
+## How to remove folder from git tracking
+
+Step 1. Add the folder path to your repo's root .gitignore file.
+path_to_your_folder/
+
+Step 2. Remove the folder from your local git tracking, but keep it on your disk.
+git rm -r --cached path_to_your_folder/
+
+Step 3. Push your changes to your git repo.
+
+## How to see your tracked files
+
+</div></code></pre>
+<p>git ls-files</p>
+<pre class="hljs"><code><div>
+## Check what is git ignored
+`git status --ignored`
+
+
+Tip: To ignore a folder do 
+`YOUR_FOLDER_NAME/`
+
+
+## Fresh start, remove big files from local history
+1. Reset your history to match GitHub:
+
+</div></code></pre>
+<p>git reset --soft origin/main</p>
+<pre class="hljs"><code><div>
+This command &quot;undoes&quot; those 8 commits. Your code stays exactly as it is, but all the changes become &quot;staged&quot; (green) again.
+
+2. Unstage the big files:
+
+</div></code></pre>
+<p>git reset</p>
+<pre class="hljs"><code><div>
+This moves everything to &quot;untracked&quot; (red). Now, because your .gitignore is working, the big folders (tgm, manley23/data) will simply disappear from Git's view.
+
+3. Create one clean, small commit:
+
+</div></code></pre>
+<p>git add .
+git commit -m &quot;Fresh start: excluding all large data and venv files&quot;</p>
+<pre class="hljs"><code><div>
+Push the clean version:
+
+</div></code></pre>
+<p>git push</p>
+<pre class="hljs"><code><div>
+# 6. Docker
+
+
+# 7. GIS
+
+## GDAL
+What is it??
+
+# 7. Unfiled Things
+
+## 7.1. Pyenv error message - What's a load path?
+
+</div></code></pre>
+<p>WARNING: seems you still have not added 'pyenv' to the load path.</p>
+<h1 id="load-pyenv-automatically-by-appending">Load pyenv automatically by appending</h1>
+<h1 id="the-following-to">the following to</h1>
+<h1 id="bash_profile-if-it-exists-otherwise-profile-for-login-shells">~/.bash_profile if it exists, otherwise ~/.profile (for login shells)</h1>
+<h1 id="and-bashrc-for-interactive-shells-">and ~/.bashrc (for interactive shells) :</h1>
+<p>export PYENV_ROOT=&quot;$HOME/.pyenv&quot;
+[[ -d $PYENV_ROOT/bin ]] &amp;&amp; export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;
+eval &quot;$(pyenv init - bash)&quot;</p>
+<h1 id="restart-your-shell-for-the-changes-to-take-effect">Restart your shell for the changes to take effect.</h1>
+<h1 id="load-pyenv-virtualenv-automatically-by-adding">Load pyenv-virtualenv automatically by adding</h1>
+<h1 id="the-following-to-bashrc">the following to ~/.bashrc:</h1>
+<p>eval &quot;$(pyenv virtualenv-init -)&quot;</p>
+<pre class="hljs"><code><div></div></code></pre>
+
+</body>
+</html>
