@@ -335,11 +335,25 @@ conda env remove -n myenv
 
 # Git
 
+# Setup
+
+1. Setup your identity
+```
+$ git config --global user.name "John Doe"
+$ git config --global user.email johndoe@example.com
+```
+
+2. Confirm global configs
+```
+git config user.name
+git config user.email
+```
+
 ## Deleting local and remote branches
 ```
 git push -d <remote_name> <branchname>   # Delete remote
 git branch -d <branchname>               # Delete local
-``
+```
 
 ## Reset to previous remote status
 `git reset --hard`
@@ -398,13 +412,39 @@ Push the clean version:
 git push
 ```
 
+## git force local to match remote
+
+```
+# 1. Download latest data from remote
+git fetch origin
+
+# 2. Force reset current branch to match remote
+git reset --hard origin/main
+```
+
 # 6. Docker
+
+https://learn.cantrill.io/p/docker-fundamentals
 
 
 # 7. GIS
 
 ## GDAL
 What is it??
+
+# R
+
+## Debugging
+```
+debugSource(YOUR_FILE_PATH)
+```
+
+If your RStudio's console is stuck in the browser, i.e. `Browse[1]`, here's how to exit:
+
+- `f` > `Q`
+
+## Restarting a frozen R session
+- In RStudio, Session > Restart R
 
 # 7. Unfiled Things
 
@@ -435,3 +475,39 @@ eval "$(pyenv virtualenv-init -)"
 
 [Video guide to configure VSCode to run R.](https://www.youtube.com/watch?v=rKPfssR66GM)
 
+## Adding R kernel to Jupyter
+
+Step 1: Install R kernel
+```
+# Inside your R console run
+install.packages('IRkernel')
+```
+
+Step 2: Link it to your Jupyter 
+```
+Rscript -e "IRkernel::installspec(user=TRUE)"
+```
+
+```R
+# Sample R code to run
+example <- 123
+
+example_data <- data.frame(
+    ID = 1:10,
+    Age = sample(18:50, 10, replace=TRUE),
+    Score = round(runif(10, 50, 100), 1)
+)
+
+print(example_data)
+
+hist(example_data$Age,
+    main = "Histogram of Ages",
+    xlab = "Age",
+    ylab = "Frequency", 
+    col = "lightblue",
+    border = "black"
+)
+```
+
+## `renv`
+https://rstudio.github.io/renv/articles/renv.html
