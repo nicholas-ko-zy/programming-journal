@@ -446,6 +446,7 @@ If your RStudio's console is stuck in the browser, i.e. `Browse[1]`, here's how 
 ## Restarting a frozen R session
 - In RStudio, Session > Restart R
 
+
 # 7. Unfiled Things
 
 ## 7.1. Pyenv error message - What's a load path?
@@ -466,6 +467,7 @@ eval "$(pyenv init - bash)"
 
 # Load pyenv-virtualenv automatically by adding
 # the following to ~/.bashrc:
+```
 
 ```
 eval "$(pyenv virtualenv-init -)"
@@ -478,6 +480,7 @@ eval "$(pyenv virtualenv-init -)"
 ## Adding R kernel to Jupyter
 
 Step 1: Install R kernel
+
 ```
 # Inside your R console run
 install.packages('IRkernel')
