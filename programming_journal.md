@@ -446,6 +446,22 @@ If your RStudio's console is stuck in the browser, i.e. `Browse[1]`, here's how 
 ## Restarting a frozen R session
 - In RStudio, Session > Restart R
 
+# Insert Chunk for VS Code
+- Inside your keyboard shorcuts JSON of your VS Code, add this
+
+```JSON
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+shift+i",
+        "command": "editor.action.insertSnippet",
+        "when": "editorTextFocus",
+        "args": {
+            "snippet": "```{r}\n\$\n```"
+        }
+    }
+]
+```
 
 # 7. Unfiled Things
 
