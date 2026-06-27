@@ -465,6 +465,22 @@ If your RStudio's console is stuck in the browser, i.e. `Browse[1]`, here's how 
 
 # 7. Unfiled Things
 
+## pydeck
+- Reset view in `pydeck` doesn't work, go into the html output and add this line above the widget configuration.
+```
+"controller": true
+```
+
+![](./img/pydeck/reset_view_widget_bug_fix.png)
+
+
+- To use map markers, you need to upgrade to webgl v9.3  or higher
+```html
+<script src='https://cdn.jsdelivr.net/npm/@deck.gl/jupyter-widget@~9.3.*/dist/index.js'></script>
+<link rel="stylesheet" href=https://cdn.jsdelivr.net/npm/@deck.gl/widgets@~9.3.*/dist/stylesheet.css />
+```
+
+
 ## 7.1. Pyenv error message - What's a load path?
 
 ```
