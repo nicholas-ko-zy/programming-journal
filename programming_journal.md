@@ -465,6 +465,10 @@ If your RStudio's console is stuck in the browser, i.e. `Browse[1]`, here's how 
 
 # 7. Unfiled Things
 
+## Julia X Gurobi
+- If you get an error that no Gurobi license is found, make sure you've copied the license file in the right place.
+- [Link to help page on where to put your license file](https://support.gurobi.com/hc/en-us/articles/360013417211-Where-do-I-place-the-Gurobi-license-file-gurobi-lic)
+
 ## pydeck
 - Reset view in `pydeck` doesn't work, go into the html output and add this line above the widget configuration.
 ```
