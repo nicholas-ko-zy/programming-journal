@@ -427,6 +427,36 @@ git reset --hard origin/main
 https://learn.cantrill.io/p/docker-fundamentals
 
 
+## Windows
+
+**Step 1**: Install WSL
+```
+wsl --install Ubuntu --web-download
+```
+
+
+**Step 1.5**: Launch `wsl`, and update packages with this command
+```
+# Before that you will have to fill in a username and password
+sudo apt update
+```
+
+
+**Step 2**: Download and install Docker Desktop from [this link](https://docs.docker.com/desktop/setup/install/windows-install/).
+
+**Step 3**: Launch Docker Desktop once, sign in and close it once you are on the homepage. 
+
+Docker Desktop consumes wayy to much RAM. We will proceed with the CLI.
+
+**Step 4**: Check the `docker` command works in your command prompt with this command
+```
+docker --version
+```
+
+
+
+
+
 # 7. GIS
 
 ## GDAL
