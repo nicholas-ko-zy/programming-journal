@@ -434,6 +434,12 @@ What is it??
 
 # R
 
+## Adding R to permanent path on Windows (Linux > Windows btw)
+```
+# Replace the filepath with your own R install filepath
+setx PATH "%PATH%;C:\Users\nicho\R-4.6.1\bin"
+```
+
 ## Debugging
 ```
 debugSource(YOUR_FILE_PATH)
