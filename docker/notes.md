@@ -212,4 +212,246 @@ docker run -p 8081:80 acantril/containerofcats
 Output:
 ![](./img/container_of_cats.png)
 
-Stopped at 08:32 of the video.
+- Press `Ctrl-C` to exit the program; Use terminal command below to confirm that the program status is `Exited`
+
+```bash
+docker ps -a
+```
+![](./img/container_of_cats_exited.png)
+
+- Now we try doing `docker run` for `containerofcats` again, but detach the terminal, so that if we kill the process in the terminal, the docker container will still be running. To detach, we need to add the flag `-d`
+
+```bash
+# Run this command with the -d flag
+docker run -p 8081:80 -d acantril/containerofcats
+
+# Double check that your container is running
+docker ps
+```
+
+- Copy down the container ID of `containerofcats` in the output of `docker ps`
+
+```bash
+# i.e. 8a2bba581eb2
+```
+
+- Run the following command to check the port mapping configuration.
+
+```
+docker port 8a2bba581eb2
+```
+Output: ![](./img/docker_port_id.png)
+
+- Execute commands within the container
+``` bash
+# docker exec -it [YOUR_CONTAINER_ID] [YOUR_COMMAND]
+
+# ps -aux: Command to see all processes running
+docker exec -it 8a2bba581eb2 ps -aux
+```
+Note: If you get an error that `ps` executable file not found in $PATH, your WSL (assuming you're on windows) has no command called `ps`. So install the necessary packages.
+
+``` bash
+# Go into the container shell
+docker exec -it 8a2bba581eb2 sh
+
+# Install the necessary package
+sh-4.4# dnf install -y procps-ng
+
+# Exit the container's shell, bringing you back into your host OS's terminal
+sh-4.4# exit
+
+# Check if this command prints the running processes inside your container
+docker exec -it 8a2bba581eb2 ps -aux
+```
+
+Output: ![](./img/docker_container_ps.png)
+
+
+- Side note: If you run `df -k` inside the docker container shell, you can see the structure of your docker container's files.
+
+- Other docker commands
+```bash
+# Restart the docker container
+docker restart [YOUR_CONTAINER_ID]
+docker stop [YOUR_CONTAINER_ID]
+```
+
+- To remove old containers that you've started up
+```bash
+# Remove container
+docker rm [YOUR_OLD_CONTAINER_ID]
+
+# Double check it's been removed
+docker ps -a
+```
+
+- To remove old **images**
+```bash
+# Get the ID of your docker image
+docker images
+
+# Remove the image from your docker
+docker rmi [YOUR_IMAGE_ID]
+```
+
+## Dockerfile Syntax
+
+![](./img/docker_file_flowchart.png)
+
+- `FROM`
+
+    Sets the base image for a build (i.e. Alpine or Ubuntu)
+
+- `LABEL`
+
+    Adds metadata to an Image (e.e. description/maintainer)
+
+- `RUN`
+
+    Runs commands in a new layer (e.g. installs or configurations)
+
+- `COPY`
+
+    Copies NEW files/folders from src (client machine) to destination (new image layer)
+
+- `ADD`
+
+    Similar to `COPY` to add files.But has additional feature to add from a remote URL & do extraction etc (e.g. adding application/web files)
+
+- `CMD`
+
+    Sets the default executable of a container & arguments (e.g. web server)
+
+    Can be override vai docker run parameters.
+
+- `ENTRYPOINT`
+
+    Similar to `CMD`, but **can't** be overridden.
+
+    Creates single purpose image.
+
+- `EXPOSE`
+
+    Informs docker what port the container app is running on (metadata only! - no network configuration)
+
+
+## [DEMO] Build and run a simple containerised application
+
+Creating custom docker images using pre-prepared applications and Dockerfiles.
+
+### App 1: `2048`
+```dockerfile
+FROM nginx:latest
+
+LABEL maintainer="adrian@cantrill.io" 
+
+COPY 2048 /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+- While inside the `./app1-2048` folder in your terminal, build a docker image.
+
+```bash
+# `-t` flag means tag: To assign a human-readable tag to your docker image
+# `dockerized-2048` is the name of your image
+# `.` Specifies the reference path for your `COPY` command in your Dockerfile
+docker build -t dockerized-2048 .
+```
+
+- After the build finishes, check that your new image is inside your local images files
+
+```bash
+docker images
+```
+
+Output: You should see `dockerized-2048` added on top.
+
+![](./img/docker_images_after_docker_build.png)
+
+- Docker run your new image
+
+    ```bash
+    # -d: Detach terminal
+    # -p: Specify port number
+    docker run -d -p 8081:80 dockerized-2048
+
+    # Verify your container is running
+    docker -ps
+
+    # Verify the port that `dockerized-2048` is running on.
+    docker port [YOUR_CONTAINER_ID] # 80/tcp -> 0.0.0.0:8081
+    ```
+
+    Since the docker image is specified to run on port 80 `EXPOSE 80`, you need to docker run on that port. 
+
+- Go to your web browser to check out the running game
+
+Address: `localhost:8081` <- copy + paste into your web browser
+
+![](./img/localhost_2048.png)
+
+### App 2: `containerofcats`
+
+Dockerfile (less efficient, uses a heavier image)
+
+```dockerfile
+FROM redhat/ubi8
+
+LABEL maintainer="Animals4life"
+
+RUN yum -y install httpd
+
+COPY index.html /var/www/html/
+
+COPY containerandcat*.jpg /var/www/html/
+
+ENTRYPOINT ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+
+EXPOSE 80
+```
+
+- `RUN`: Installs the Apache 2 webserver
+- `COPY`: The main web page `index.html`
+- `COPY`: Wildcard to copy all the cat images.
+
+^ Can copy one time only, but for educational purposes, two copies for less efficiency.
+
+- Do a `docker build` while you're inside the app2 directory
+
+```
+docker build -t containerofcats .
+```
+
+Moral of the story: Select an appropriate base image to `RUN` for your application.
+
+- Check that the build is completed
+```bash
+docker images
+```
+
+- `docker run`, match the exposed port
+```bash
+docker run -d -p 8081:80 containerofcats
+```
+
+- End the process
+
+```bash
+docker stop [YOUR_CONTAINER_ID]
+docker rm [YOUR_CONTAINER_ID]
+```
+
+## Docker Storage - Writable Layer, Bind Mounts & Volumes
+
+
+
+
+
+
+
+
+
