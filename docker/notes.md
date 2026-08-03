@@ -447,11 +447,258 @@ docker rm [YOUR_CONTAINER_ID]
 
 ## Docker Storage - Writable Layer, Bind Mounts & Volumes
 
+- Writable Layer
+
+    Inside the layers of a docker image, any data that is written is added to a union of data layers called the 'writable layer'.
+
+    The 'writable layer' has to be separate from the docker image, because the images are 'read-only'.
+
+    This architecture requires a **file system driver** which has overhead and will impact performance.
+
+- Container Storage
+
+    - tmpfs (Fast / Host Memory)
+        - Not persistent, can't be shared between containers
+        - Usually for temporary or sensitive files
+
+    - Bind mounts (A folder on your host system)
+        - Multiple containers can access data on the host's filesystem. 
+        - Might reduce portability because the filepaths are predefined.
+
+    - Volumes (Like bind mounts, but managed by Docker)
+        -  Outside the lifecycle of a container
+        - Can be attached to multiple containers (no locking), so be careful to simultaneous changes to data in volume.
+
+    
+## Docker networking - modes and port exposure
+
+- Host networking
+
+    Suppose we begin with two hosts and two containers each.
+
+    Con: Cannot run parallel instances of a container since you can only use one port at a time.
+
+    ![](./img/host_networking.png)
+
+- Bridge networking
+
+    - Containers are connected to a bridge network => Each container gets a private IP address on the bridge network SO THAT "unique private IP address + non-unique port" is still unique.
+
+    - Containers can communicate with each other, since they're on the same bridge network. But cannot be reached outside of the bridge network. To gain access to the bridge network, we need to 'publish' or map a host port to a container port.
+
+    - 'publish', `host:container`. Host-port-colon-container-port
+    i.e. 
+    ```
+    -p 1337:1337
+    -p 1338:1337
+    ```
+
+## [DEMO] Extending our container application using Environment Variables
+
+- Run these command
+```bash
+# Create a container running the `phpadmin` DB management application
+docker run --name phpmyadmin -d -p 8081:80 -e PMA_ARBITRARY=1 phpmyadmin/phpmyadmin
+
+# Pull down the mariaDB image
+docker pull mariadb:10.6.4-focal
+```
+- Environment variables allow you to use commands as long as you provide the filepath to where that command should do. If you inspect an image, like the `mariadb` one, you'll see under `"Env"` that there are different env variables.
+![](./img/env_example.png)
+
+- Convention dictates that environment variable names are all-caps, and the values are in small letter.s
+
+- To add environment variables using docker in the command line:
+
+```bash
+# -e: Specifies the environment variable name and the filepath
+docker run --name db -e MYSQL_ROOT_PASSWORD=somewordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress -e MYSQL_USER=wordpress -d mariadb:10.6.4-focal --default-authentication-plugin=mysql_native_password
+
+# Check that mariadb is running
+docker ps
+```
+
+- Check that the environment variables you specified in that long command above are added do a `docker inspect`
+
+```bash
+docker inspect [YOUR_ENVIRONMENT_ID]
+```
+
+![](./img/docker_inspect_new_env.png)
+
+- While the db applications are running, you can go to `localhost:8081` and log into the database GUI.
+
+![](./img/php_myadmin.png)
+
+```bash
+Server: 172.17.0.3 # taken from the inspect results under IP address
+Username: root
+Password: somewordpress # as defined in MYSQL_ROOT_PASSWORD of the new Env variable
+```
+
+![](./img/php_user_accounts.png)
 
 
+- Go into the `db` container's bash (terminal)
 
+```bash
+docker exec -it db bash
 
+# Do `df -k` to list all the drives and volumes that are mounted. You'll see there are no external mounted drives. If the container is deleted, so is the storage
+root@ff87dcab6892:/# df -k
 
+# ^ An example of tmpfs
+```
+
+## [DEMO] Docker Bind Mounts & Volumes
+
+[notes for this demo](https://github.com/acantril/docker-fundamentals/blob/main/docker-container-volumes/instructions.md)
+
+### Bind Mounts
+
+- Run this
+    ```bash
+    docker run --name phpmyadmin -d -p 8081:80 -e PMA_ARBITRARY=1 phpmyadmin/phpmyadmin
+    ```
+
+- Recall that bind mounts map a file/directory on the host machine (local) onto one in the container. To note: This usually creates some problems in Windows.
+
+- Navigate to your home folder
+
+- Create a new folder 
+    ```
+    mkdir mariadb_data
+    ```
+
+- In your home folder run this command (Windows) For the macOS / Linux see notes link above
+
+    ```
+    docker run --name db -e MYSQL_ROOT_PASSWORD=somewordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress -e MYSQL_USER=wordpress --mount type=bind,source=%cd%/mariadb_data,target=/var/lib/mysql -d mariadb:10.6.4-focal --default-authentication-plugin=mysql_native_password
+    ```
+
+    ^ The code above runs a container with the configuration of a few environment variables.
+
+- Now check that your `mariadb_data` folder has been populated from the above command
+
+    ```
+    cd mariadb_data
+    dir
+    ```
+
+- To remove a folder on Windows terminal
+
+    ```
+    rmdir /s /q "[YOUR_RELATIVE_OR_ABOSOLUTE_FILEPATH]"
+    ```
+
+### Volumes
+
+The preferred way to manage data (writable layer) outside of container's lifecycle. Managed end-to-end by Docker.
+
+If you delete a container, this volume continues to exist.
+
+- To create a volume
+```
+# docker volume create [YOUR_VOLUME_NAME]
+docker volume create mariadb_data
+```
+
+- Double-check that your volume has been correctly created
+```bash
+# Check the volume exists, via its name
+docker volume ls
+
+# Check the volume metadata
+# docker volume inspect [YOUR_VOLUME_NAME]
+docker volume inspect mariadb_data
+```
+
+- To remove a volume
+```bash
+# docker volume rm [YOUR_VOLUME_NAME]
+docker volume rm mariadb_data
+
+# Double check the volume has been deleted 
+docker volume ls
+```
+
+Docker volumes are created when: 
+1. You use the `docker volume create` command 
+2. You specify in the `RUN` command of your Dockerfile
+
+- Mount a volume `(--mount)`
+
+    ```bash
+    docker run --name db -e MYSQL_ROOT_PASSWORD=somewordpress -e MYSQL_PASSWORD=wordpress -e MYSQL_DATABASE=wordpress -e MYSQL_USER=wordpress --mount source=mariadb_data,target=/var/lib/mysql -d mariadb:10.6.4-focal --default-authentication-plugin=mysql_native_password
+    ```
+
+- Check the new volume has been created via the long command above
+
+    ```bash
+    docker volume ls
+
+    # Even if you `docker stop db`
+    docker stop db
+
+    # You will still see the `mariadb_data` volume 
+    docker volume ls
+    ```
+
+To note: If you run a command that creates a data with the new command, it will just use the existing data folder.
+
+## Docker Compose
+
+Create, manage and cleanup multi-container applications.
+
+- Reads a "docker compose file", "compose.yaml"
+
+- Creates, updates or deletes based on that file. (Containers, networking, volumes...)
+
+- `docker compose up`
+
+    Instructions sent up to the Docker Daemon, to run/update containers, volumes and networks.
+
+## [DEMO] Using Docker Compose with our application
+
+[notes for this demo](https://github.com/acantril/docker-fundamentals/blob/main/docker-compose/instructions.md)
+
+- Make sure the tabs are converted to spaces
+
+- Run a `docker compose`
+    ```bash
+    # up: Tell docker compose to bring up the things in the compose file
+    # -d: Runs it detached from the terminal
+    docker composer up -d
+    ```
+
+- Per the `compose.yaml` instructions, you would've created two new volumes
+
+    + `[YOUR_USERNAME]_mariadb_data`
+    + `[YOUR_USERNAME]_wordpress_data`
+
+- Double check these volumes are created
+
+    ```bash
+    docker volume ls
+    ```
+
+On `localhost:8081`, you should see the wordpress installation screen.
+
+^ Because the .yaml file specified the port to be `8081:80`
+
+![](./img/wordpress_installation_screen.png)
+
+Pass: Y)Ccegv75J)BVsPrPJ
+
+![](./img/wordpress_post.png)
+
+- Remove containers defined in the `yaml` file
+
+    ```bash
+    docker compose down
+    ```
+
+    ![](./img/docker_compose_down.png)
 
 
 
