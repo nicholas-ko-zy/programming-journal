@@ -693,12 +693,35 @@ Pass: Y)Ccegv75J)BVsPrPJ
 ![](./img/wordpress_post.png)
 
 - Remove containers defined in the `yaml` file
-
     ```bash
     docker compose down
     ```
 
     ![](./img/docker_compose_down.png)
 
+## Container Registry
 
+- Container registries are like Github, but for docker images
+- There are public and private registries.
+- Registries are split into repositories
+- You can `pull` from a repository or `push` into a repository
+- For docker hub, you will have a username repo name & tag
+    i.e. acantril/containerofcats:latest
 
+## [DEMO] Uploading our application to docker hub
+
+- Pull down latest version of `containerofcats`
+    ```bash
+    docker pull acantril/containerofcats:latest
+    ```
+
+## Other Docker Notes
+
+ENSURE YOUR HARDWARE HAS VM ENBLED (CONFIGURE IN BIOS) INTEL AND AMD CHIPS DO THIS DIFFERENTLY
+
+1. Install Docker Desktop for Windows
+
+2. Install wsl via command prompt
+
+3. Enable virtualmachineplatform
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -All -NoRestart
