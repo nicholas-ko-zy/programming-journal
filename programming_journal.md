@@ -233,6 +233,12 @@ you specified.
 ```
 uv init --python 3.12
 ```
+
+Run your local Pythin instance
+```
+uv run python
+```
+
 Adding packages via `uv`
 ```
 uv add Django
