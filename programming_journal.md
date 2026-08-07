@@ -234,7 +234,7 @@ you specified.
 uv init --python 3.12
 ```
 
-Run your local Pythin instance
+Run your project's Python instance
 ```
 uv run python
 ```
