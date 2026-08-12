@@ -586,3 +586,17 @@ hist(example_data$Age,
 
 ## `renv`
 https://rstudio.github.io/renv/articles/renv.html
+
+# Obsidian + Git
+
+Once you created a new vault in your `git` folder:
+- Git add, commit and push
+- Then run the following commands
+
+```bash
+# The command given in the empty remote repo
+```
+
+```bash
+git remote set-url origin [YOUR_REMOTE_URL]
+```
