@@ -234,6 +234,15 @@ you specified.
 uv init --python 3.12
 ```
 
+Things created when you `uv init` + `uv run`
+- .git
+- .venv: This is where your project's dependencies will reside (virtual environmment)
+- .gitignore
+- .python-version
+- pyproject.toml: Contains meta data about your project
+- README.md
+- src
+
 Run your project's Python instance
 ```
 uv run python
@@ -245,6 +254,24 @@ uv add Django
 ```
 *Remark: `uv` takes note of all the dependencies arising from top-level packages.
 i.e. Django's dependencies - `asgiref`, `sqlparse` etc.
+
+**`uv` update workflow**
+1. `uv init`" Create a new Python project
+2. `uv add [YOUR_PYTHON_PACKAGE]`: Add dependency
+3. `uv remove` : Remove depedency
+4. `uv lock`: Update your lock file without changing existing dependencies
+5. `uv run`: Run a command using the project env
+6.
+
+
+**Restoring the Python environment**
+You'll need
+
+- `pyproject.toml`
+- `uv.lock`
+
+copy + pasted, then run `uv sync`.
+
 
 **Running `uv` in a project folder**
 
@@ -553,6 +580,101 @@ eval "$(pyenv virtualenv-init -)"
 
 # R
 
+## Setting up R for VSCode
+
+For Windows, Linux guide coming soon
+
+1. Make sure you've installed R from cran.r-project (Note: RStudio does not come with an R.exe)
+
+2. Add R to your permanent path on Windows 
+
+```
+# Replace the filepath with your own R install filepath
+setx PATH "%PATH%;C:\Users\nicho\R-4.6.1\bin"
+```
+3. Install the VS Code extensions
+
+  1. R
+  2. R Debugger
+
+5. Using the R Termina; (type `R` into cmd prompt), install `languageserver` package
+```R
+install.packages("languageserver")
+```
+
+6. In VSCode, open user settings, copy this in
+```JSON
+{
+    "files.associations": {
+        "*.Rmd": "rmd"
+    },
+    "r.plot.useHttpgd": true,
+    "r.bracketedPaste": true,
+    "r.rterm.windows": "C:/Users/nicho/anaconda3/Scripts/radian.exe",
+    "r.useRenvLibPath": true,
+    "r.notebook.executeInTerminal": true,
+    "r.alwaysUseActiveTerminal": true,
+    "rdebugger.rpath": "C:/Program Files/R/R-4.6.0/bin/x64/R.exe",
+    "rdebugger.timeouts.startup": 10000,
+    "r.debugger.timeouts.startup": 10000,
+    "r.rpath.windows": "C:/Users/nicho/R-4.6.1/bin/R.exe",
+    "terminal.integrated.commandsToSkipShell": [
+        "language-julia.interrupt"
+    ]
+}
+```
+7. Get radian; In your conda prompt
+```Python
+pip install -U radian
+
+# Look for where radian is
+where radian.exe
+
+# Copy and paste radian in the user settings above
+```
+
+8. Install renv
+```R
+# Open r terminal in your VSCode
+install.packages("renv")
+```
+
+9. `renv` workflow
+Note: Do the initialisation using R via command prompt to make sure you're in the right directory.
+
+Make sure you're in the root directory before you launch an R interactive window
+
+- renv::init(): Initalise renv in an existing project
+- renv::install(): Install new packages
+- renv::update(): Update packages
+- renv:: snapshot(): Record packages and their sources in the lockfile
+- renv::restore(): Reinstall specific package versions, when you pass your code to a collaborator.
+
+10. To run files in R Interactive Terminal
+```R
+source("YOUR_FILENAME.R")
+```
+
+11. Install the vscDebugger package from the repo
+```R
+install.packages("vscDebugger", repos = "https://manuelhentschel.r-universe.dev")
+
+# May need to manually install
+install.packages("jsonlite", "R6")
+```
+
+12. If still cannot debug, run this in the command palette:
+```
+r.debugger.updateRPackage
+```
+
+4. Add renv
+```
+
+```
+
+
+
 [Video guide to configure VSCode to run R.](https://www.youtube.com/watch?v=rKPfssR66GM)
 
 ## Adding R kernel to Jupyter
@@ -592,6 +714,8 @@ hist(example_data$Age,
 
 ## `renv`
 https://rstudio.github.io/renv/articles/renv.html
+
+
 
 # Obsidian + Git
 
