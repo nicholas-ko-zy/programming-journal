@@ -580,6 +580,14 @@ eval "$(pyenv virtualenv-init -)"
 
 # R
 
+## R Notebook Boilerplate
+```R
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+# IF NECESSARY: Change root dir to whatever you want
+knitr::opts_knit$set(root.dir = "../../")
+```
+
 ## Setting up R for VSCode
 
 For Windows, Linux guide coming soon
@@ -668,11 +676,109 @@ install.packages("jsonlite", "R6")
 r.debugger.updateRPackage
 ```
 
-4. Add renv
-```
+13. Add this to your VSCode keyboard shortcut JSON file to insert R chunk in .Rmd files
 
 ```
+[
+    {
+        "key": "ctrl+shift+i",
+        "command": "editor.action.insertSnippet",
+        "when": "editorTextFocus",
+        "args": {
+            "snippet": "```{r}\n\$\n```"
+        }
+    }
+]
+```
 
+14. Add this to your `.RProfile` so you can get watch your environment variables
+```R
+# .RProfile
+is_background_daemon <- !interactive() && (
+  identical(Sys.getenv("R_DAEMON"), "TRUE") ||
+  !is.null(getOption("callr.condition_handler_env")) ||
+  identical(Sys.getenv("CALLR_CHILD_SESSION"), "1")
+)
+
+is_rmd_chunk <- !interactive() && !is_background_daemon && (
+  any(grep("rmarkdown|knitr", commandArgs(trailingOnly = FALSE))) ||
+  any(vapply(c("rmarkdown", "knitr"), isNamespaceLoaded, logical(1)))
+)
+
+if (is_background_daemon) {
+  # Strict fast exit
+
+} else {
+
+  if (file.exists("renv/activate.R")) source("renv/activate.R")
+
+  options(vscodeR = TRUE)
+
+  vsc_init <- list.files(
+    file.path(Sys.getenv("USERPROFILE"), ".vscode/extensions"),
+    pattern = "^init\\.R$",
+    recursive = TRUE,
+    full.names = TRUE
+  )
+  vsc_init <- vsc_init[grepl("reditorsupport\\.r-", vsc_init)][1]
+
+  if (!is.na(vsc_init) && file.exists(vsc_init)) {
+    source(vsc_init, chdir = TRUE, local = FALSE)
+    if (exists(".First.sys", envir = globalenv())) {
+      .First.sys()
+    }
+
+    if (interactive()) {
+      message("VS Code Session Watcher: Interactive Environment Connected.")
+    } else if (is_rmd_chunk) {
+      message("VS Code Session Watcher: Rmd Notebook Chunk Connected.")
+      if (requireNamespace("knitr", quietly = TRUE)) {
+        knitr::opts_knit$set(envir = .GlobalEnv)
+      }
+    }
+  }
+
+  if (interactive()) {
+    options(radian.auto_match = FALSE)
+    options(radian.auto_indentation = FALSE)
+    options(radian.complete_while_typing = FALSE)
+  }
+}
+```
+
+## Using the `box` library to modularise your code
+
+Examples:
+
+```R
+box::use(
+  utils[read.csv, write.csv],
+  dplyr[...]
+  tidyr[...]
+  here[...],
+  ./plot_maps #Custom R package
+)
+```
+
+## Using `here()`
+
+- Tell R where is the path to the current file starting from the project root
+
+  ```R
+  # Project Root: Parent folder of SRC
+  # Current file: synthpop.R
+  # here::i_am("src/r/synthpop.R")
+  here::i_am("YOUR_REFERECE_POINT_DIR") 
+  ```
+
+- Specifying another dir relative to your reference point
+
+  ```R
+  # my_str: rds_data
+  my_dir <- paste0(here("data", "output_data", my_str, "/"))
+
+  # project_root/data/output_data/rds_data/
+  ```
 
 
 [Video guide to configure VSCode to run R.](https://www.youtube.com/watch?v=rKPfssR66GM)
