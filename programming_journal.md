@@ -532,6 +532,12 @@ If your RStudio's console is stuck in the browser, i.e. `Browse[1]`, here's how 
 ]
 ```
 
+## Knitting from project directory
+```R
+# Assuming your root directory is one level above Lab2
+rmarkdown::render("Lab2/Lab2.Rmd")
+```
+
 # 7. Unfiled Things
 
 ## Julia X Gurobi
