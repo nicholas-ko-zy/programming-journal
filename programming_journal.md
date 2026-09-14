@@ -538,6 +538,16 @@ If your RStudio's console is stuck in the browser, i.e. `Browse[1]`, here's how 
 rmarkdown::render("Lab2/Lab2.Rmd")
 ```
 
+## Installing `prob` package
+
+```R
+install.packages("remotes")
+library(remotes)
+remotes::install_github("cran/fOptions")
+remotes::install_github("cran/fAsianOptions")
+remotes::install_github("cran/prob")
+```
+
 # 7. Unfiled Things
 
 ## Julia X Gurobi
