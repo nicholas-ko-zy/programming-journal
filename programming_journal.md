@@ -455,6 +455,33 @@ git fetch origin
 git reset --hard origin/main
 ```
 
+## Git merge workflow
+
+1. Checkout and update your main branch
+```
+git checkout main
+git pull origin main
+```
+
+2. Switch to your feature branch and merge main
+
+```
+git checkout feature-branch
+git merge main
+```
+
+3. Resolve conflicts (if any)
+
+4. Push conflict free code to repo (still on feature-branch)
+```
+git add .
+git commit -m "resolved conflicts with main"
+git push
+```
+
+5. Open and complete pull request on Github
+
+
 # 6. Docker
 
 https://learn.cantrill.io/p/docker-fundamentals
