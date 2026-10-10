@@ -36,6 +36,14 @@ Remarks:
   + Ctrl+K Ctrl+Right Arrow
   + Ctrl+K Ctrl+Left Arrow
 
+## Making trees
+```ultree
+      State
+        PUMA
+          Tract
+            Block Group
+```
+
 ## Solved issues
 - **Problem:** On my pop os machine, I could not do select multiple lines using the `Ctrl` + `Shift` + `↑/↓` shortcuts,
   because there was a conflicting keyboard shortcut called `notebook.focusPreviousEditor`
@@ -879,3 +887,4 @@ Once you created a new vault in your `git` folder:
 ```bash
 git remote set-url origin [YOUR_REMOTE_URL]
 ```
+
