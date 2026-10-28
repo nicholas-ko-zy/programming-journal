@@ -797,6 +797,14 @@ if (is_background_daemon) {
 }
 ```
 
+15. Install `sess`
+```r
+src <- "C:/Users/nicho/.vscode/extensions/reditorsupport.r-3.2.2/dist/resources/sess"
+install.packages(src, repos = NULL, type = "source")
+```
+
+
+
 ## Using the `box` library to modularise your code
 
 Examples:

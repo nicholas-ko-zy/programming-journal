@@ -23,3 +23,14 @@ df %>%
   mutate(your_col = replace_na(your_col, 0), # suppose you want to replace with 0
          )
 ```
+
+- Installing `Rgraphviz` directly from `bioconductors`
+
+```r
+install.packages("BiocManager")
+# OR
+renv::install("BiocManager")
+BiocManager::install("Rgraphviz")
+# If you used renv, run the following command
+renv::snapshot()
+```
