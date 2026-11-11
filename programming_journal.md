@@ -390,6 +390,28 @@ git config user.name
 git config user.email
 ```
 
+## Large file past fix
+
+I really need to learn how to stop pushing large files to git...WIP
+
+Putting this rough ver for now
+
+```
+# 1. Install git-filter-repo if you don't have it (e.g., pip install git-filter-repo)
+# 2. Remove the large files from the entire history
+git filter-repo --path documentation/img/pythonized_plots/for_sharing/4_MSAs/5_plot_error_map_msa_atlanta_NAs_shown.pdf --path documentation/img/pythonized_plots/for_sharing/4_MSAs/6_msas_barchart_rmse_maps_merged.pdf --invert-paths
+
+# 3. Add them to .gitignore so they never get tracked again
+echo "documentation/img/pythonized_plots/**/*.pdf" >> .gitignore
+git add .gitignore
+git commit -m "Ignore generated output PDFs"
+
+# 4. Force push your updated history to remote
+git push origin msa-synthpops --force
+```
+
+
+
 ## Deleting local and remote branches
 ```
 git push -d <remote_name> <branchname>   # Delete remote
